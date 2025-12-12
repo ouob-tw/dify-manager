@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# ver 2.0.0
+# ver 2.0.1
 # Dify 升級腳本
-# date 2025/12/08
+# date 2025/12/12
 
 # 執行內容：
 # 0. 掃描並選擇 Dify 部署目錄
@@ -169,9 +169,9 @@ echo ""
 echo "正在獲取最新版本資訊..."
 git --work-tree="$dify_repo_path" --git-dir="$dify_repo_path/.git" fetch --tags
 
-# 獲取最新版本號
+# 獲取最新版本號（僅正式版，不包含 beta、rc 等預發布版本）
 latest_tag=$(git --work-tree="$dify_repo_path" --git-dir="$dify_repo_path/.git" tag -l | \
-             grep -E '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$' | \
+             grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
              sort -V | \
              tail -1)
 
