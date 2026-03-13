@@ -30,6 +30,20 @@ echo "  Dify 升級腳本 v2.0.0"
 echo "========================================"
 echo ""
 
+# 檢查是否以 root 或 sudo 執行，若是則警告
+if [ "$EUID" -eq 0 ]; then
+    echo "⚠ 警告：偵測到以 root/sudo 權限執行"
+    echo "建議以一般用戶執行：bash update_script.sh"
+    echo "腳本在需要時會自動向您索取 sudo 密碼"
+    echo ""
+    echo "輸入 yes 強制繼續，或按 Enter 取消："
+    read -p "> " root_confirm
+    if [[ "$root_confirm" != "yes" ]]; then
+        echo "操作已取消"
+        exit 1
+    fi
+fi
+
 # 獲取腳本所在目錄（主目錄）
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "主目錄：$script_dir"
@@ -353,4 +367,5 @@ rm .old_env
 rm old_docker-compose.yaml
 
 docker compose up -d
+sudo chown -R 1001:1001 volumes/app/storage/
 
